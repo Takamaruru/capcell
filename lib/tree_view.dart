@@ -1,10 +1,13 @@
 import 'dart:math';
 
 import 'package:capcell/function.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
 
 class TreeViewPage extends StatefulWidget {
+  const TreeViewPage({super.key});
+
   @override
   _TreeViewPageState createState() => _TreeViewPageState();
 }
@@ -92,8 +95,6 @@ class _TreeViewPageState extends State<TreeViewPage> {
 
             child: Text("左"),
           ),
-          ElevatedButton(onPressed: () {}, child: Text("data")),
-          ElevatedButton(onPressed: () {}, child: Text("右")),
           Expanded(
             child: InteractiveViewer(
               constrained: false,
@@ -115,7 +116,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
                   // I can decide what widget should be shown here based on the id
                   var a = node.key!.value as int?;
 
-                  return rectangleWidget(a);
+                  return Capcell(a);
                 },
               ),
             ),
@@ -127,6 +128,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
 
   Widget rectangleWidget(int? a) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
           onDoubleTap: () {},
@@ -148,9 +150,10 @@ class _TreeViewPageState extends State<TreeViewPage> {
         InkWell(
           onDoubleTap: () async {
             await openVSCodeFromFlutter(
-              '/Users/hasuiketakaya/development/flutter-project/Ongoing_projects/capcell/lib/main.dart',
+              '/Users/takayahasuike/development/flutter-project/ongoing-project/capcell/lib/main.dart',
             );
           },
+
           child: Container(
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 108, 229, 206),
@@ -180,6 +183,80 @@ class _TreeViewPageState extends State<TreeViewPage> {
           ),
         ),
       ],
+    );
+  }
+
+  List hoverList = [0, false];
+
+  Widget Capcell(int? a) {
+    bool isHover = false;
+    if (hoverList[0] == a) {
+      isHover = hoverList[1];
+    }
+    return InkWell(
+      onHover: (value) {
+        print(value);
+        hoverList = [a, value];
+        setState(() {});
+      },
+      onTap: () {},
+      child: SizedBox(
+        width: isHover ? 380 : 300,
+        height: isHover ? 140 : 100,
+        child: Stack(
+          children: [
+            Align(alignment: Alignment.topCenter, child: rectangleWidget(a)),
+            isHover
+                ? Positioned(
+                  top: 50 - 35 / 2,
+                  right: 0,
+                  child: InkWell(
+                    onTap: () {
+                      print("object");
+                    },
+                    child: addButton(),
+                  ),
+                )
+                : SizedBox(),
+            isHover
+                ? Positioned(
+                  bottom: 0,
+                  left: 95,
+                  child: InkWell(
+                    onTap: () {
+                      print("object");
+                    },
+                    child: addButton(),
+                  ),
+                )
+                : SizedBox(),
+            isHover
+                ? Positioned(
+                  bottom: 0,
+                  right: 95,
+                  child: InkWell(
+                    onTap: () {
+                      print("object");
+                    },
+                    child: addButton(),
+                  ),
+                )
+                : SizedBox(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget addButton() {
+    return Container(
+      width: 35,
+      height: 35,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.redAccent,
+      ),
+      child: Icon(CupertinoIcons.add, color: Colors.white),
     );
   }
 
