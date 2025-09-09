@@ -83,9 +83,10 @@ class _TreeViewPageState extends State<TreeViewPage> {
           ),
           ElevatedButton(
             onPressed: () {
-              edge.position = Offset(edge.position.dx + 10, 0);
+              // edge.position = Offset(edge.position.dx + 10, 0);
               setState(() {
                 print("object");
+                read();
               });
             },
 
