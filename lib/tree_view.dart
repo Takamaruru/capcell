@@ -192,7 +192,6 @@ class _TreeViewPageState extends State<TreeViewPage> {
     }
     return InkWell(
       onHover: (value) {
-        print(value);
         hoverList = [a, value];
         setState(() {});
       },

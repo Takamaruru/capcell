@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_selector/file_selector.dart';
 
@@ -17,15 +16,6 @@ Future<void> openVSCodeFromFlutter(String filePath) async {
     print('VSCode opened successfully');
   } else {
     print('Error: ${response.body}');
-  }
-}
-
-void read() async {
-  String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-
-  if (selectedDirectory == null) {
-    // User canceled the picker
-    print(selectedDirectory);
   }
 }
 
