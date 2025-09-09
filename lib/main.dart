@@ -10,7 +10,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Home(),
-      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        splashColor: Colors.transparent, // 波紋色
+        highlightColor: Colors.transparent, // 長押し時のハイライト
+        hoverColor: Colors.transparent, // Hover時(Web/デスクトップ)
+      ),
     );
   }
 }

@@ -10,7 +10,7 @@ def open_vscode():
         return {'error': 'file_path not provided'}, 400
 
     # VSCode CLI を呼ぶ
-    code_path = '/usr/local/bin/code'  # macOSの場合
+    code_path = 'code'  # macOSの場合
     subprocess.run([code_path, '--reuse-window', '--goto', f'{file_path}:1:1'])
     return {'status': 'success'}
 
