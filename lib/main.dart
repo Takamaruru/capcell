@@ -2,13 +2,16 @@ import 'package:capcell/tree_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  // listFiles("/Users/hasuiketakaya/development/flutter-project");
   runApp(MyApp());
+  // runApp(FilePickerDemo());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Home(),
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,

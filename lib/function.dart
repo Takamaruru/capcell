@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
+import 'package:file_selector/file_selector.dart';
 
 Future<void> openVSCodeFromFlutter(String filePath) async {
   final url = Uri.parse('http://127.0.0.1:5000/open_vscode');
@@ -20,13 +21,32 @@ Future<void> openVSCodeFromFlutter(String filePath) async {
 }
 
 void read() async {
-  final directory = await getApplicationDocumentsDirectory();
-  final path = directory.path;
-  final file = File('$path/hoge.txt');
+  String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
 
-  // ファイルがあった時だけ読み込む
-  if (await file.exists()) {
-    final data = await file.readAsString();
-    print(data);
+  if (selectedDirectory == null) {
+    // User canceled the picker
+    print(selectedDirectory);
+  }
+}
+
+Future<void> pickFolderAndListFiles() async {
+  // フォルダ選択ダイアログを表示
+  final path = await getDirectoryPath();
+  if (path == null) {
+    print("フォルダが選択されませんでした");
+    return;
+  }
+
+  final dir = Directory(path);
+
+  // フォルダ内のファイル・ディレクトリを取得
+  final entities = dir.listSync();
+
+  for (var entity in entities) {
+    if (entity is File) {
+      print("File: ${entity.path}");
+    } else if (entity is Directory) {
+      print("Dir : ${entity.path}");
+    }
   }
 }

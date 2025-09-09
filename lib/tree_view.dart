@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:capcell/function.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +15,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: appbar(),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -85,12 +83,11 @@ class _TreeViewPageState extends State<TreeViewPage> {
             ],
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               // edge.position = Offset(edge.position.dx + 10, 0);
-              setState(() {
-                print("object");
-                read();
-              });
+              // read();
+              pickFolderAndListFiles();
+              setState(() {});
             },
 
             child: Text("左"),
@@ -265,6 +262,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
 
   @override
   void initState() {
+    super.initState();
     final node1 = Node.Id(1);
     final node2 = Node.Id(2);
     final node3 = Node.Id(3);
@@ -296,4 +294,11 @@ class _TreeViewPageState extends State<TreeViewPage> {
       ..subtreeSeparation = (150)
       ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
   }
+}
+
+PreferredSizeWidget appbar() {
+  return AppBar(
+    title: Text("プロジェクトタイトル"),
+    actions: [Icon(CupertinoIcons.settings)],
+  );
 }
