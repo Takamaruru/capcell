@@ -207,9 +207,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
                   top: 50 - 35 / 2,
                   right: 0,
                   child: InkWell(
-                    onTap: () {
-                      print("object");
-                    },
+                    onTap: () => addCell(a!, Position.right),
                     child: addButton(),
                   ),
                 )
@@ -219,9 +217,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
                   bottom: 0,
                   left: 95,
                   child: InkWell(
-                    onTap: () {
-                      print("object");
-                    },
+                    onTap: () => addCell(a!, Position.bottomLeft),
                     child: addButton(),
                   ),
                 )
@@ -231,9 +227,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
                   bottom: 0,
                   right: 95,
                   child: InkWell(
-                    onTap: () {
-                      print("object");
-                    },
+                    onTap: () => addCell(a!, Position.bottomRight),
                     child: addButton(),
                   ),
                 )
@@ -256,12 +250,46 @@ class _TreeViewPageState extends State<TreeViewPage> {
     );
   }
 
+  void addCell(int id, String position) {
+    // 使用例
+    final node = findNodeById(graph, id);
+    print(node);
+    var newNode = Node.Id(id + 1);
+    switch (position) {
+      case (Position.right):
+        newNode.position = Offset(node!.x + 400, node.y);
+        final targetNode = findNodeById(graph, 1);
+        if (targetNode != null) {
+          graph.addEdge(targetNode, newNode);
+        }
+        break;
+      case (Position.bottomLeft):
+        newNode.position = Offset(node!.x, node.y + 250);
+        graph.addEdge(node, newNode);
+        break;
+      case (Position.bottomRight):
+        newNode.position = Offset(node!.x, node.y + 250);
+        graph.addEdge(node, newNode);
+        break;
+    }
+
+    setState(() {});
+  }
+
+  Node? findNodeById(Graph graph, int id) {
+    for (var node in graph.nodes) {
+      if (node.key?.value == id) {
+        return node;
+      }
+    }
+    return null;
+  }
+
   final Graph graph = Graph()..isTree = true;
   BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
 
   @override
   void initState() {
-    super.initState();
     final node1 = Node.Id(1);
     final node2 = Node.Id(2);
     final node3 = Node.Id(3);
@@ -293,11 +321,17 @@ class _TreeViewPageState extends State<TreeViewPage> {
       ..subtreeSeparation = (150)
       ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
   }
+
+  PreferredSizeWidget appbar() {
+    return AppBar(
+      title: Text("プロジェクトタイトル"),
+      actions: [Icon(CupertinoIcons.settings)],
+    );
+  }
 }
 
-PreferredSizeWidget appbar() {
-  return AppBar(
-    title: Text("プロジェクトタイトル"),
-    actions: [Icon(CupertinoIcons.settings)],
-  );
+class Position {
+  static const String right = "right";
+  static const String bottomLeft = "bottomLeft";
+  static const String bottomRight = "bottomRight";
 }
