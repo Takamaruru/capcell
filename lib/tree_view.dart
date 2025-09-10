@@ -147,7 +147,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
         InkWell(
           onDoubleTap: () async {
             await openVSCodeFromFlutter(
-              '/Users/takayahasuike/development/flutter-project/ongoing-project/capcell/lib/main.dart',
+              '/Users/hasuiketakaya/development/flutter-project/Ongoing_projects/capcell/lib/main.dart',
             );
           },
 
@@ -250,11 +250,13 @@ class _TreeViewPageState extends State<TreeViewPage> {
     );
   }
 
-  void addCell(int id, String position) {
+  void addCell(int id, String position) async {
     // 使用例
     final node = findNodeById(graph, id);
-    print(node);
-    var newNode = Node.Id(id + 1);
+    int lastID = await loadLastId();
+    int newID = lastID + 1;
+    var newNode = Node.Id(newID);
+    print(id);
     switch (position) {
       case (Position.right):
         newNode.position = Offset(node!.x + 400, node.y);
@@ -272,6 +274,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
         graph.addEdge(node, newNode);
         break;
     }
+    saveLastId(newID);
 
     setState(() {});
   }

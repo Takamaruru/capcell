@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:file_selector/file_selector.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future<void> openVSCodeFromFlutter(String filePath) async {
   final url = Uri.parse('http://127.0.0.1:5000/open_vscode');
@@ -39,4 +40,22 @@ Future<void> pickFolderAndListFiles() async {
       print("Dir : ${entity.path}");
     }
   }
+}
+
+Future<File> _getIdFile() async {
+  final dir = await getApplicationSupportDirectory(); // macOS, Windows 両対応
+  // print(dir.path);
+  return File('${dir.path}/last_id.txt');
+}
+
+Future<int> loadLastId() async {
+  final file = await _getIdFile();
+  if (!await file.exists()) return 1;
+  final content = await file.readAsString();
+  return int.tryParse(content) ?? 1;
+}
+
+Future<void> saveLastId(int id) async {
+  final file = await _getIdFile();
+  await file.writeAsString(id.toString());
 }
