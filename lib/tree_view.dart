@@ -147,7 +147,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
         InkWell(
           onDoubleTap: () async {
             await openVSCodeFromFlutter(
-              '/Users/hasuiketakaya/development/flutter-project/Ongoing_projects/capcell/lib/main.dart',
+              '/Users/takayahasuike/development/flutter-project/Ongoing_projects/capcell/lib/main.dart',
             );
           },
 
