@@ -183,62 +183,13 @@ class _TreeViewPageState extends State<TreeViewPage> {
     );
   }
 
-  List hoverList = [0, false];
-
   Widget Capcell(int? a) {
-    bool isHover = false;
-    if (hoverList[0] == a) {
-      isHover = hoverList[1];
-    }
-    return InkWell(
-      onHover: (value) {
-        hoverList = [a, value];
-        setState(() {});
-      },
-      onTap: () {},
-      child: SizedBox(
-        width: 380,
-        height: 140,
-        child: Stack(
-          children: [
-            Positioned(
-              top: 0,
-              left: 40,
-              child: rectangleWidget(a),
-            ),
-            isHover
-                ? Positioned(
-                  top: 50 - 35 / 2,
-                  right: 0,
-                  child: InkWell(
-                    onTap: () => addCell(a!, Position.right),
-                    child: addButton(),
-                  ),
-                )
-                : SizedBox(),
-            isHover
-                ? Positioned(
-                  bottom: 0,
-                  left: 95,
-                  child: InkWell(
-                    onTap: () => addCell(a!, Position.bottomLeft),
-                    child: addButton(),
-                  ),
-                )
-                : SizedBox(),
-            isHover
-                ? Positioned(
-                  bottom: 0,
-                  right: 95,
-                  child: InkWell(
-                    onTap: () => addCell(a!, Position.bottomRight),
-                    child: addButton(),
-                  ),
-                )
-                : SizedBox(),
-          ],
-        ),
-      ),
+    return HoverableCell(
+      key: ValueKey(a),
+      nodeId: a,
+      rectangleBuilder: rectangleWidget,
+      buttonBuilder: addButton,
+      onAddCell: addCell,
     );
   }
 
@@ -324,4 +275,90 @@ class Position {
   static const String right = "right";
   static const String bottomLeft = "bottomLeft";
   static const String bottomRight = "bottomRight";
+}
+
+// 独立したホバー状態を持つセルウィジェット
+class HoverableCell extends StatefulWidget {
+  final int? nodeId;
+  final Widget Function(int?) rectangleBuilder;
+  final Widget Function() buttonBuilder;
+  final void Function(int, String) onAddCell;
+
+  const HoverableCell({
+    super.key,
+    required this.nodeId,
+    required this.rectangleBuilder,
+    required this.buttonBuilder,
+    required this.onAddCell,
+  });
+
+  @override
+  State<HoverableCell> createState() => _HoverableCellState();
+}
+
+class _HoverableCellState extends State<HoverableCell> {
+  bool isHover = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onHover: (value) {
+        setState(() {
+          isHover = value;
+        });
+      },
+      onTap: () {},
+      child: SizedBox(
+        width: 380,
+        height: 140,
+        child: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              left: 40,
+              child: widget.rectangleBuilder(widget.nodeId),
+            ),
+            if (isHover) ...[
+              Positioned(
+                top: 50 - 35 / 2,
+                right: 0,
+                child: InkWell(
+                  onTap: () {
+                    if (widget.nodeId != null) {
+                      widget.onAddCell(widget.nodeId!, Position.right);
+                    }
+                  },
+                  child: widget.buttonBuilder(),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 95,
+                child: InkWell(
+                  onTap: () {
+                    if (widget.nodeId != null) {
+                      widget.onAddCell(widget.nodeId!, Position.bottomLeft);
+                    }
+                  },
+                  child: widget.buttonBuilder(),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 95,
+                child: InkWell(
+                  onTap: () {
+                    if (widget.nodeId != null) {
+                      widget.onAddCell(widget.nodeId!, Position.bottomRight);
+                    }
+                  },
+                  child: widget.buttonBuilder(),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
 }
