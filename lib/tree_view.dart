@@ -7,7 +7,7 @@ class TreeViewPage extends StatefulWidget {
   const TreeViewPage({super.key});
 
   @override
-  _TreeViewPageState createState() => _TreeViewPageState();
+  State<TreeViewPage> createState() => _TreeViewPageState();
 }
 
 class _TreeViewPageState extends State<TreeViewPage> {
@@ -197,11 +197,15 @@ class _TreeViewPageState extends State<TreeViewPage> {
       },
       onTap: () {},
       child: SizedBox(
-        width: isHover ? 380 : 300,
-        height: isHover ? 140 : 100,
+        width: 380,
+        height: 140,
         child: Stack(
           children: [
-            Align(alignment: Alignment.topCenter, child: rectangleWidget(a)),
+            Positioned(
+              top: 0,
+              left: 40,
+              child: rectangleWidget(a),
+            ),
             isHover
                 ? Positioned(
                   top: 50 - 35 / 2,
@@ -293,6 +297,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
 
   @override
   void initState() {
+    super.initState();
     final node1 = Node.Id(1);
     final node2 = Node.Id(2);
     final node3 = Node.Id(3);

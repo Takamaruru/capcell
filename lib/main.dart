@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:capcell/GridPage.dart';
+import 'package:capcell/grid_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +19,6 @@ class AppTheme extends ChangeNotifier {
   }
 }
 
-// void main() {
-//   runApp(MyApp());
-// }
-
 /// This method initializes macos_window_utils and styles the window.
 Future<void> _configureMacosWindowUtils() async {
   const config = MacosWindowUtilsConfig();
@@ -35,7 +31,7 @@ Future<void> main() async {
       await _configureMacosWindowUtils();
       runApp(const MacosUIGalleryApp());
     } else if (Platform.isWindows) {
-      runApp(MyApp());
+      runApp(const MyApp());
     }
   }
 }
@@ -61,16 +57,18 @@ class MacosUIGalleryApp extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      home: const Home(),
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
-        splashColor: Colors.transparent, // 波紋色
-        highlightColor: Colors.transparent, // 長押し時のハイライト
-        hoverColor: Colors.transparent, // Hover時(Web/デスクトップ)
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
       ),
     );
   }
@@ -114,26 +112,25 @@ class _MacOShomeState extends State<MacOShome> {
           return const Center(child: Text('End Sidebar'));
         },
       ),
-      child: Home(),
+      child: const Home(),
     );
   }
 }
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("すべてのプロジェクト", style: TextStyle(fontSize: 30)),
+        title: const Text("すべてのプロジェクト", style: TextStyle(fontSize: 30)),
         centerTitle: false,
       ),
-      body: GridPage(),
+      body: const GridPage(),
     );
   }
 }
-// TreeViewPage()
 
 class WidgetGallery extends StatefulWidget {
   const WidgetGallery({super.key});
@@ -266,49 +263,6 @@ class _WidgetGalleryState extends State<WidgetGallery> {
                   leading: MacosIcon(CupertinoIcons.uiwindow_split_2x1),
                   label: Text('共有中'),
                 ),
-                // SidebarItem(
-                //   label: Text('Basic UI Elements'),
-                //   section: true,
-                //   expandDisclosureItems: true,
-                //   disclosureItems: [
-                // SidebarItem(
-                //   leading: MacosImageIcon(
-                //     AssetImage(
-                //       'assets/sf_symbols/button_programmable_2x.png',
-                //     ),
-                //   ),
-                //   label: Text('Buttons'),
-                // ),
-                // SidebarItem(
-                //   leading: MacosImageIcon(
-                //     AssetImage(
-                //       'assets/sf_symbols/lines_measurement_horizontal_2x.png',
-                //     ),
-                //   ),
-                //   label: Text('Indicators'),
-                // ),
-                // SidebarItem(
-                //   leading: MacosImageIcon(
-                //     AssetImage(
-                //       'assets/sf_symbols/character_cursor_ibeam_2x.png',
-                //     ),
-                //   ),
-                //   label: Text('Fields'),
-                // ),
-                // SidebarItem(
-                //   leading: MacosImageIcon(
-                //     AssetImage(
-                //       'assets/sf_symbols/rectangle_3_group_2x.png',
-                //     ),
-                //   ),
-                //   label: Text('Colors'),
-                // ),
-                // SidebarItem(
-                //   leading: MacosIcon(CupertinoIcons.square_on_square),
-                //   label: Text('Dialogs & Sheets'),
-                // ),
-                //   ],
-                // ),
                 SidebarItem(
                   leading: MacosIcon(CupertinoIcons.uiwindow_split_2x1),
                   label: Text('Layout'),
@@ -318,40 +272,9 @@ class _WidgetGalleryState extends State<WidgetGallery> {
                       leading: MacosIcon(CupertinoIcons.macwindow),
                       label: Text('Toolbar'),
                     ),
-                    // SidebarItem(
-                    //   leading: MacosIcon(CupertinoIcons.uiwindow_split_2x1),
-                    //   label: Text('SliverToolbar'),
-                    // ),
-                    // SidebarItem(
-                    //   leading: MacosIcon(CupertinoIcons.uiwindow_split_2x1),
-                    //   label: Text('TabView'),
-                    // ),
-                    // SidebarItem(
-                    //   leading: MacosIcon(CupertinoIcons.rectangle_split_3x1),
-                    //   label: Text('ResizablePane'),
-                    // ),
                   ],
                   expandDisclosureItems: true,
                 ),
-                // SidebarItem(
-                //   label: Text('Additional UI Elements'),
-                //   section: true,
-                //   expandDisclosureItems: true,
-                //   disclosureItems: [
-                //     SidebarItem(
-                //       leading: MacosImageIcon(
-                //         AssetImage(
-                //           'assets/sf_symbols/filemenu_and_selection_2x.png',
-                //         ),
-                //       ),
-                //       label: Text('Selectors'),
-                //     ),
-                //     SidebarItem(
-                //       leading: MacosIcon(CupertinoIcons.textformat_size),
-                //       label: Text('Typography'),
-                //     ),
-                //   ],
-                // ),
               ],
             );
           },
@@ -370,21 +293,10 @@ class _WidgetGalleryState extends State<WidgetGallery> {
             return const Center(child: Text('End Sidebar'));
           },
         ),
-        child:
-            [
-              CupertinoTabView(builder: (_) => const Home()),
-              CupertinoTabView(builder: (_) => const Home()),
-              // const IndicatorsPage(),
-              // const FieldsPage(),
-              // const ColorsPage(),
-              // const DialogsPage(),
-              // const ToolbarPage(),
-              // const SliverToolbarPage(isVisible: !kIsWeb),
-              // const TabViewPage(),
-              // const ResizablePanePage(),
-              // const SelectorsPage(),
-              // const TypographyPage(),
-            ][pageIndex],
+        child: [
+          CupertinoTabView(builder: (_) => const Home()),
+          CupertinoTabView(builder: (_) => const Home()),
+        ][pageIndex],
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_selector/file_selector.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,38 +14,40 @@ Future<void> openVSCodeFromFlutter(String filePath) async {
     body: jsonEncode({'file_path': filePath}),
   );
 
-  if (response.statusCode == 200) {
-    print('VSCode opened successfully');
-  } else {
-    print('Error: ${response.body}');
+  if (kDebugMode) {
+    if (response.statusCode == 200) {
+      print('VSCode opened successfully');
+    } else {
+      print('Error: ${response.body}');
+    }
   }
 }
 
 Future<void> pickFolderAndListFiles() async {
-  // フォルダ選択ダイアログを表示
   final path = await getDirectoryPath();
   if (path == null) {
-    print("フォルダが選択されませんでした");
+    if (kDebugMode) {
+      print("フォルダが選択されませんでした");
+    }
     return;
   }
 
   final dir = Directory(path);
-
-  // フォルダ内のファイル・ディレクトリを取得
   final entities = dir.listSync();
 
-  for (var entity in entities) {
-    if (entity is File) {
-      print("File: ${entity.path}");
-    } else if (entity is Directory) {
-      print("Dir : ${entity.path}");
+  if (kDebugMode) {
+    for (var entity in entities) {
+      if (entity is File) {
+        print("File: ${entity.path}");
+      } else if (entity is Directory) {
+        print("Dir : ${entity.path}");
+      }
     }
   }
 }
 
 Future<File> _getIdFile() async {
-  final dir = await getApplicationSupportDirectory(); // macOS, Windows 両対応
-  // print(dir.path);
+  final dir = await getApplicationSupportDirectory();
   return File('${dir.path}/last_id.txt');
 }
 
